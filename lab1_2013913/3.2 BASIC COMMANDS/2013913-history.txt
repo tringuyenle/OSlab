@@ -1,0 +1,8 @@
+    1  mkdir 2013913
+    2  cd 2013913
+    3  vim example.txt
+    4  ls
+    5  cat example.txt
+    6  head -5 example.txt
+    7  tail -5 example.txt
+    8  history > 2013913-history.txt

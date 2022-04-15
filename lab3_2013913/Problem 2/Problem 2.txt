@@ -1,0 +1,10 @@
+a, Kết quả đầu ra của cond_usg.c và nosynch.c là:
+	cond_usg.c: Thread 1 sau chạy hàm watch_count() và gặp câu lệnh pthread_cond_wait(...) thì chuyển sang trạng thái chờ.
+Tiếp theo đó, thread 2 và thread 3 chạy hàm inc_count() và nâng giá trị biến count lên 20, đồng thời khi gặp câu lệnh pthread_cond_signal(...) 
+thì gửi tín hiệu về cho thread 1 để tiếp tục chạy. Thread 1 sau khi đã chạy xong thì thread 2 và thread 3 tiếp tục chạy và nâng biến count lên 290 rồi kết thúc chương trình.
+	
+	nosynch.c: Thread 1 chạy và tăng biến count lên 90. sau đó thread 2 và thread 3 chạy và nâng biến count lên 290 và kết thúc chương trình.
+
+b,	Tác dụng của count_mutex: Bảo vệ đoạn code có biến dùng chung là count nhằm tránh gây ra lỗi race condition.
+	Tác dụng của count_threshold_cv: Đưa thread vào trạng thái chờ cho tới khi thread đó nhận được tín hiệu để tiếp tục thực hiện,
+	nhằm giữ được thứ tự trước sau của mục đích đoạn code cần thực hiện.

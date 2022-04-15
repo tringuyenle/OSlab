@@ -1,0 +1,32 @@
+a, Với ví dụ "Trang e-learning cho phép thực hiện đăng ký trực tuyến
+với hai chức năng: enroll() và disenroll(). 
+Một số nguyên class_size sẽ được sử dụng để chỉ ra kích thước tối đa của một lớp. 
+Giả sử rằng nhiều sinh viên có thể ghi danh hoặc rút tên đăng ký cùng một lúc. 
+Một sinh viên có thể ghi danh nếu và chỉ lớp học không đầy." 
+
+Lỗi race condition có thể xãy ra với các trường hợp sau:
+
+Trường hợp 1: Nhiều sinh viên đăng kí môn cùng lúc.
+Vấn đề có thể xảy ra: Quá trình nạp lại giá trị cho class_size của nhiều sinh viên có thể diễn ra đồng thời.
+Điều đó có nghĩa là giá trị biến đếm số sinh viên chỉ tăng lên 1 đơn vị trong khi có nhiều hơn 1 sinh viên nhấn đăng kí.
+
+Trường hợp 2: Nhiều sinh viên hủy đăng kí môn cùng lúc.
+Vấn đề có thể xảy ra: Tương tự như trường hợp 1. Có thể xãy ra tình trạng giá trị biến đếm số sinh viên chỉ giảm 1 đơn vị 
+trong khi có nhiều hơn 1 sinh viên nhấn hủy đăng kí.
+
+Trường hợp 3: Có sinh viên đăng kí môn và có sinh viên hủy đăng kí môn cùng lúc.
+Vấn đề có thể xảy ra: Biến đếm số sinh viên bên sinh viên đăng kí môn thì tăng lên 1 đơn vị.
+Còn biến đếm số sinh viên bên sinh viên hủy đăng kí môn thì giảm 1 đơn vị. Lúc này, khi cập nhật biến đếm số sinh viên
+lên lại hệ thống thì biến này sẽ có giá trị ngẫu nhiên là +1 hay -1 đơn vị, chứ không giữ nguyên giá trị.
+
+b, Mã giả:
+enroll(){
+	pthread_mutex_lock(&lock);
+	if (count < class_size) count++;
+	pthread_mutex_unlock(&lock);
+}
+disenroll(){
+	pthread_mutex_lock(&lock);
+	count--;
+	pthread_mutex_unlock(&lock);
+}
